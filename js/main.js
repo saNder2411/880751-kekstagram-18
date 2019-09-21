@@ -7,7 +7,12 @@ var MESSAGE_ARRAY = ['Всё отлично!',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+
 var NAMES_AUTHOR_COMMENTS = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+
+var DESCRIPTION_PHOTOS = ['Бухта', 'Тропинка', 'Остров', 'Девушка', 'Суп', 'Спорткар', 'Клубника', 'Сок',
+  'Самолет', 'Обувь', 'Песок', 'Ауди', 'Салат', 'Кот', 'Уги', 'Высота', 'Хор', 'Ретро', 'Тапки', 'Пальмы',
+  'Блюдо', 'Закат', 'Краб', 'Концерт', 'Джунгли'];
 
 var generateArrayUrlAvatars = function () {
   var arrayUrlAvatars = [];
@@ -45,7 +50,7 @@ var generateArrayUserPhotos = function () {
   for (var i = 0; i < QUANTITY_PHOTOS; i++) {
     userArray[i] = {
       url: beginAddsStringPhoto + (i + 1) + endAddsStringPhoto,
-      description: 'Случайная фотография',
+      description: DESCRIPTION_PHOTOS[i],
       likes: getRandomNumberFromPeriod(15, 200),
       comments: generateCommentsArray()
     };
@@ -66,15 +71,8 @@ var renderPhotos = function (photosObject) {
   var photo = photoTemplate.cloneNode(true);
 
   photo.querySelector('.picture__img').src = photosObject.url;
-  photo.querySelector('.picture__img').alt = photosObject.description;
   photo.querySelector('.picture__likes').textContent = photosObject.likes;
-
-  for (var i = 0; i < photosObject.comments.length; i++) {
-    // photo.querySelector('.picture__comments').innerHTML +=
-    // (i === 0) ? '<img src=' + photosObject.comments[i].avatar + ' width="33" height="33">' : '\n' + '<img src=' + photosObject.comments[i].avatar + ' width="33" height="33">';
-    photo.querySelector('.picture__comments').textContent += (i === 0) ? photosObject.comments[i].avatar : '\n' + photosObject.comments[i].avatar;
-    photo.querySelector('.picture__comments').textContent += ' ' + photosObject.comments[i].message + '\n' + photosObject.comments[i].name;
-  }
+  photo.querySelector('.picture__comments').textContent = photosObject.comments.length;
 
   return photo;
 };
