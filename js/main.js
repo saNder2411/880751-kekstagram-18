@@ -228,7 +228,7 @@ var addHandlers = function () {
     var effectLevelInput = formEditing.querySelector('.effect-level__value');
     var slider = formEditing.querySelector('.effect-level__line');
     var sliderPin = formEditing.querySelector('.effect-level__pin');
-    var sliderDepth = formEditing.querySelector('.effect-level__depth');
+    // var sliderDepth = formEditing.querySelector('.effect-level__depth');
     var positionPin = getComputedStyle(sliderPin).left;
 
     var addEffectRadioFocusHandler = function (radio, effectClass) {
