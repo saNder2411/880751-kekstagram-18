@@ -93,7 +93,6 @@ var renderFullPhoto = function (photo) {
   var commentItem = commentsList.querySelector('.social__comment');
   var fragment = document.createDocumentFragment();
 
-  // fullPhoto.classList.remove('hidden');
   commentsNumbers.classList.add('visually-hidden');
   commentsLoader.classList.add('visually-hidden');
 
