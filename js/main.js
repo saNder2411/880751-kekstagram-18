@@ -329,7 +329,7 @@
     return currentFilterValue;
   };
 
-  var onSliderPinMouseUp = function () {
+  var onSliderPinMouseDown = function () {
     var activeEffect = window.formEditing.querySelector('.effects__radio:checked').value;
     effectLevelInput.value = parseInt(positionPin, 10);
     if (activeEffect === 'none') {
@@ -345,7 +345,7 @@
     imagePreview.style.filter = effectFilter + '(' + calculatesFilterValue(effectMax, effectMin) + filterUnit + ')';
   };
 
-  sliderPin.addEventListener('mouseup', onSliderPinMouseUp);
+  sliderPin.addEventListener('mouseup', onSliderPinMouseDown);
 })();
 
 // zoom-photo.js-----------------------------------------------------------------------------------

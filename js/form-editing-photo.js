@@ -1,15 +1,14 @@
 'use strict';
 
 (function () {
-  var MAX_WIDTH = 100;
-  var DEFAULT_VALUE = '100%';
+  var MAX_WIDTH = 453;
+  var DEFAULT_VALUE = '100';
   var imagePreview = window.formEditing.querySelector('.img-upload__preview img');
   var effectsRadio = window.formEditing.querySelectorAll('.effects__radio');
   var effectLevelInput = window.formEditing.querySelector('.effect-level__value');
-  var sliderPin = window.formEditing.querySelector('.effect-level__pin');
   var slider = window.formEditing.querySelector('.effect-level');
+  var sliderPin = window.formEditing.querySelector('.effect-level__pin');
   var sliderDepth = window.formEditing.querySelector('.effect-level__depth');
-  var positionPin = getComputedStyle(sliderPin).left;
   var effects = {
     chrome: {
       min: 0,
@@ -49,10 +48,9 @@
       imagePreview.style.filter = '';
       imagePreview.className = '';
       imagePreview.classList.toggle('effects__preview--' + effectName);
-      effectLevelInput.value = parseInt(DEFAULT_VALUE, 10);
-      sliderDepth.style.width = DEFAULT_VALUE;
-      sliderPin.style.left = DEFAULT_VALUE;
-      positionPin = sliderPin.style.left;
+      effectLevelInput.value = DEFAULT_VALUE;
+      sliderDepth.style.width = MAX_WIDTH + 'px';
+      sliderPin.style.left = MAX_WIDTH + 'px';
       if (effectName === 'none') {
         slider.classList.add('hidden');
       } else {
@@ -65,26 +63,52 @@
     addEffectRadioFocusHandler(effectsRadio[i]);
   }
 
-  var calculatesFilterValue = function (max, min) {
-    var currentFilterValue = ((max * parseInt(positionPin, 10)) / MAX_WIDTH) + min;
+  var calculatesFilterValue = function (max, min, positionPin) {
+    var currentFilterValue = ((max * positionPin) / MAX_WIDTH) + min;
     return currentFilterValue;
   };
 
-  var onSliderPinMouseUp = function () {
-    var activeEffect = window.formEditing.querySelector('.effects__radio:checked').value;
-    effectLevelInput.value = parseInt(positionPin, 10);
-    if (activeEffect === 'none') {
-      imagePreview.style.filter = '';
-      return;
-    }
+  var onSliderPinMouseDown = function (evt) {
+    evt.preventDefault();
 
-    var effectSettings = effects[activeEffect];
-    var effectMax = effectSettings.max;
-    var effectMin = effectSettings.min;
-    var effectFilter = effectSettings.filterType;
-    var filterUnit = effectSettings.unit;
-    imagePreview.style.filter = effectFilter + '(' + calculatesFilterValue(effectMax, effectMin) + filterUnit + ')';
+    var startCoordsX = evt.clientX;
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = startCoordsX - moveEvt.clientX;
+      var currentOffsetLeft = sliderPin.offsetLeft - shift;
+      startCoordsX = moveEvt.clientX;
+
+      if (currentOffsetLeft >= 0 && currentOffsetLeft <= MAX_WIDTH) {
+        sliderPin.style.left = currentOffsetLeft + 'px';
+        effectLevelInput.value = Math.round(calculatesFilterValue(DEFAULT_VALUE, 0, currentOffsetLeft));
+
+        var activeEffect = window.formEditing.querySelector('.effects__radio:checked').value;
+        if (activeEffect === 'none') {
+          imagePreview.style.filter = '';
+          return;
+        }
+
+        var effectSettings = effects[activeEffect];
+        var effectMax = effectSettings.max;
+        var effectMin = effectSettings.min;
+        var effectFilter = effectSettings.filterType;
+        var filterUnit = effectSettings.unit;
+        imagePreview.style.filter = effectFilter + '(' + calculatesFilterValue(effectMax, effectMin, currentOffsetLeft) + filterUnit + ')';
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   };
 
-  sliderPin.addEventListener('mouseup', onSliderPinMouseUp);
+  sliderPin.addEventListener('mousedown', onSliderPinMouseDown);
 })();
