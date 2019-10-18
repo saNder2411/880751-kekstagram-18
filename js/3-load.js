@@ -12,13 +12,13 @@
       if (xhr.status === 200) {
         onSuccess(xhr.response);
       } else if (onError) {
-        onError();
+        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
     if (onError) {
       xhr.addEventListener('error', function () {
-        onError();
+        onError('Произошла ошибка соединения');
       });
 
       xhr.addEventListener('timeout', function () {
@@ -26,12 +26,10 @@
       });
     }
 
+    xhr.timeout = 10000;
+
     var url = (method === 'GET') ? URL_LOAD : URL_UPLOAD;
     xhr.open(method, url);
-
-    // var sendX = (data) ? xhr.send(data) : xhr.send();
-    // console.log(sendX);
-    // sendX();
 
     if (data) {
       xhr.send(data);

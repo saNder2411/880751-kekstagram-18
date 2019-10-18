@@ -6,6 +6,10 @@
     document.querySelector('#picture')
       .content
       .querySelector('.picture');
+  // var errorTemplate =
+  //   document.querySelector('#error')
+  //     .content
+  //     .querySelector('.error');
 
   var generateThumbnailTemplate = function (photoData) {
     var template = thumbnailTemplate.cloneNode(true);
@@ -19,12 +23,23 @@
 
   var renderThumbnails = function (thumbnailsData) {
     var fragment = document.createDocumentFragment();
+
     for (var i = 0; i < thumbnailsData.length; i++) {
       fragment.appendChild(generateThumbnailTemplate(thumbnailsData[i]));
     }
 
     window.blockUserPhotos.appendChild(fragment);
   };
-  // renderThumbnails(window.photosData);
-  window.load(false, 'GET', renderThumbnails, false);
+  renderThumbnails(window.photosData);
+
+  // var errorHandler = function (errorMessage) {
+  //   var template = errorTemplate.cloneNode(true);
+  //   var main = document.querySelector('main');
+
+  //   template.querySelector('.error__title').textContent = errorMessage;
+
+  //   main.appendChild(template);
+
+  // };
+  // window.load(false, 'GET', renderThumbnails, errorHandler);
 })();
