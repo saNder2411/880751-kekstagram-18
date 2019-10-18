@@ -25,5 +25,6 @@
 
     window.blockUserPhotos.appendChild(fragment);
   };
-  renderThumbnails(window.photosData);
+  // renderThumbnails(window.photosData);
+  window.load(false, 'GET', renderThumbnails, false);
 })();

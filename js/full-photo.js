@@ -1,9 +1,11 @@
 'use strict';
 
 (function () {
+  console.log(window.blockUserPhotos);
   var fullPhoto = document.querySelector('.big-picture');
   var fullPhotoClose = fullPhoto.querySelector('.big-picture__cancel');
   var createdThumbnails = window.blockUserPhotos.querySelectorAll('.picture');
+  console.log(createdThumbnails);
 
   var renderFullPhoto = function (photo) {
     var bigImage = fullPhoto.querySelector('.big-picture__img img');

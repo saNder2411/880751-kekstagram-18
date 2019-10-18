@@ -324,7 +324,7 @@
     addEffectRadioFocusHandler(effectsRadio[i]);
   }
 
-  var calculatesFilterValue = function (max, min) {
+  var convertValue = function (max, min) {
     var currentFilterValue = ((max * parseInt(positionPin, 10)) / MAX_WIDTH) + min;
     return currentFilterValue;
   };
@@ -342,7 +342,7 @@
     var effectMin = effectSettings.min;
     var effectFilter = effectSettings.filterType;
     var filterUnit = effectSettings.unit;
-    imagePreview.style.filter = effectFilter + '(' + calculatesFilterValue(effectMax, effectMin) + filterUnit + ')';
+    imagePreview.style.filter = effectFilter + '(' + convertValue(effectMax, effectMin) + filterUnit + ')';
   };
 
   sliderPin.addEventListener('mouseup', onSliderPinMouseDown);

@@ -42,5 +42,5 @@
     }
     return photosData;
   };
-  window.photosData = generatePhotosData();
+  // window.photosData = generatePhotosData();
 })();
