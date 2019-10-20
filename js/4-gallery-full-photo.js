@@ -3,9 +3,8 @@
 (function () {
   var fullPhoto = document.querySelector('.big-picture');
   var fullPhotoClose = fullPhoto.querySelector('.big-picture__cancel');
-  var createdThumbnails = window.blockUserPhotos.querySelectorAll('.picture');
 
-  var renderFullPhoto = function (photo) {
+  var fillsFullPhotoData = function (photoData) {
     var bigImage = fullPhoto.querySelector('.big-picture__img img');
     var likesCount = fullPhoto.querySelector('.likes-count');
     var photoDescription = fullPhoto.querySelector('.social__caption');
@@ -19,20 +18,20 @@
     commentsNumbers.classList.add('visually-hidden');
     commentsLoader.classList.add('visually-hidden');
 
-    bigImage.src = photo.url;
-    likesCount.textContent = photo.likes;
-    photoDescription.textContent = photo.description;
-    commentsCount.textContent = photo.comments.length;
+    bigImage.src = photoData.url;
+    likesCount.textContent = photoData.likes;
+    photoDescription.textContent = photoData.description;
+    commentsCount.textContent = photoData.comments.length;
 
-    for (var i = 0; i < photo.comments.length; i++) {
+    for (var i = 0; i < photoData.comments.length; i++) {
       var cloneItem = commentItem.cloneNode(true);
       fragment.appendChild(cloneItem);
       var avatar = fragment.children[i].querySelector('.social__picture');
       var comment = fragment.children[i].querySelector('.social__text');
 
-      avatar.src = photo.comments[i].avatar;
-      avatar.alt = photo.comments[i].name;
-      comment.textContent = photo.comments[i].message;
+      avatar.src = photoData.comments[i].avatar;
+      avatar.alt = photoData.comments[i].name;
+      comment.textContent = photoData.comments[i].message;
     }
 
     commentsList.innerHTML = '';
@@ -54,26 +53,6 @@
     document.removeEventListener('keydown', onFullPhotoEscPress);
   };
 
-
-  var addThumbnailPhotoClickHandler = function (createdThumbnail, photoData) {
-    createdThumbnail.addEventListener('click', function () {
-      renderFullPhoto(photoData);
-      showFullPhoto();
-    });
-  };
-
-  var addThumbnailPhotoKeydownHandler = function (createdThumbnail, photoData) {
-    createdThumbnail.addEventListener('keydown', function (evt) {
-      window.util.isEnterAndSpaceEvent(evt, showFullPhoto);
-      renderFullPhoto(photoData);
-    });
-  };
-
-  for (var i = 0; i < createdThumbnails.length; i++) {
-    addThumbnailPhotoClickHandler(createdThumbnails[i], window.photosData[i]);
-    addThumbnailPhotoKeydownHandler(createdThumbnails[i], window.photosData[i]);
-  }
-
   fullPhotoClose.addEventListener('click', function () {
     hideFullPhoto();
   });
@@ -81,4 +60,18 @@
   fullPhotoClose.addEventListener('keydown', function (evt) {
     window.util.isEnterAndSpaceEvent(evt, hideFullPhoto);
   });
+
+  var thumbnailHandler = function (photosData) {
+    var createdThumbnails = Array.from(window.blockUserPhotos.querySelectorAll('.picture'));
+    window.blockUserPhotos.addEventListener('click', function (evt) {
+      var isPicture = evt.target.closest('.picture') || evt.target.classList.contains('picture');
+      if (isPicture) {
+        evt.preventDefault();
+        fillsFullPhotoData(photosData[createdThumbnails.indexOf(isPicture)]);
+        showFullPhoto();
+      }
+    });
+  };
+
+  window.load(false, 'GET', thumbnailHandler, false);
 })();
