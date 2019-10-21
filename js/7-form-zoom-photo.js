@@ -5,13 +5,11 @@
   var MAX_SCALE = 100;
   var MIN_SCALE = 25;
   var SCALE_CONVERSION = 100;
-  var imagePreview = window.formEditing.querySelector('.img-upload__preview img');
-  var scaleValueInput = window.formEditing.querySelector('.scale__control--value');
-  var scaleOut = window.formEditing.querySelector('.scale__control--smaller');
-  var scaleIn = window.formEditing.querySelector('.scale__control--bigger');
+  var scaleOut = window.form.formEditing.querySelector('.scale__control--smaller');
+  var scaleIn = window.form.formEditing.querySelector('.scale__control--bigger');
 
   var zoom = function (actionType) {
-    var currentScale = parseInt(scaleValueInput.value, 10);
+    var currentScale = parseInt(window.form.scaleValueInput.value, 10);
 
     if (actionType === 'out' && currentScale > MIN_SCALE) {
       currentScale -= SCALE_STEP;
@@ -19,8 +17,8 @@
       currentScale += SCALE_STEP;
     }
 
-    scaleValueInput.value = currentScale + '%';
-    imagePreview.style.transform = 'scale(' + (currentScale / SCALE_CONVERSION) + ')';
+    window.form.scaleValueInput.value = currentScale + '%';
+    window.form.imagePreview.style.transform = 'scale(' + (currentScale / SCALE_CONVERSION) + ')';
   };
 
   scaleOut.addEventListener('click', function () {

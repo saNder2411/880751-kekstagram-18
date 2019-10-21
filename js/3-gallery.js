@@ -6,6 +6,10 @@
     document.querySelector('#picture')
       .content
       .querySelector('.picture');
+  var errorTemplate =
+    document.querySelector('#error')
+      .content
+      .querySelector('.error');
 
   var generateThumbnailTemplate = function (photoData) {
     var template = thumbnailTemplate.cloneNode(true);
@@ -17,13 +21,23 @@
     return template;
   };
 
-  var renderThumbnails = function (thumbnailsData) {
+  var successHandler = function (photosData) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < thumbnailsData.length; i++) {
-      fragment.appendChild(generateThumbnailTemplate(thumbnailsData[i]));
+    window.photosData = photosData;
+
+    for (var i = 0; i < photosData.length; i++) {
+      fragment.appendChild(generateThumbnailTemplate(photosData[i]));
     }
 
     window.blockUserPhotos.appendChild(fragment);
   };
-  renderThumbnails(window.photosData);
+
+  var errorHandler = function (errorMessage) {
+    var template = errorTemplate.cloneNode(true);
+    var main = document.querySelector('main');
+
+    template.querySelector('.error__title').textContent = errorMessage;
+    main.appendChild(template);
+  };
+  window.load(false, 'GET', successHandler, errorHandler);
 })();
