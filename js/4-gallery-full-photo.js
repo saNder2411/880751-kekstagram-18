@@ -61,17 +61,13 @@
     window.util.isEnterAndSpaceEvent(evt, hideFullPhoto);
   });
 
-  var thumbnailHandler = function (photosData) {
+  window.blockUserPhotos.addEventListener('click', function (evt) {
     var createdThumbnails = Array.from(window.blockUserPhotos.querySelectorAll('.picture'));
-    window.blockUserPhotos.addEventListener('click', function (evt) {
-      var isPicture = evt.target.closest('.picture') || evt.target.classList.contains('picture');
-      if (isPicture) {
-        evt.preventDefault();
-        fillsFullPhotoData(photosData[createdThumbnails.indexOf(isPicture)]);
-        showFullPhoto();
-      }
-    });
-  };
-
-  window.load(false, 'GET', thumbnailHandler, false);
+    var isPicture = evt.target.closest('.picture') || evt.target.classList.contains('picture');
+    if (isPicture) {
+      evt.preventDefault();
+      fillsFullPhotoData(window.photosData[createdThumbnails.indexOf(isPicture)]);
+      showFullPhoto();
+    }
+  });
 })();

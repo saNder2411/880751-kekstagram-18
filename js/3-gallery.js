@@ -23,6 +23,7 @@
 
   var successHandler = function (photosData) {
     var fragment = document.createDocumentFragment();
+    window.photosData = photosData;
 
     for (var i = 0; i < photosData.length; i++) {
       fragment.appendChild(generateThumbnailTemplate(photosData[i]));

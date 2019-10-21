@@ -116,3 +116,4 @@
 
   sliderPin.addEventListener('mousedown', onSliderPinMouseDown);
 })();
+
