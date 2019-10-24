@@ -48,4 +48,9 @@
   formEditingClose.addEventListener('keydown', function (evt) {
     window.util.isEnterAndSpaceEvent(evt, hideFormEditing);
   });
+
+  formEditing.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.load(new FormData(formEditing), 'POST', onSuccess, window.util.errorHandler);
+  });
 })();

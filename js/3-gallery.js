@@ -6,10 +6,6 @@
     document.querySelector('#picture')
       .content
       .querySelector('.picture');
-  var errorTemplate =
-    document.querySelector('#error')
-      .content
-      .querySelector('.error');
 
   var generateThumbnailTemplate = function (photoData) {
     var template = thumbnailTemplate.cloneNode(true);
@@ -32,12 +28,5 @@
     window.blockUserPhotos.appendChild(fragment);
   };
 
-  var errorHandler = function (errorMessage) {
-    var template = errorTemplate.cloneNode(true);
-    var main = document.querySelector('main');
-
-    template.querySelector('.error__title').textContent = errorMessage;
-    main.appendChild(template);
-  };
-  window.load(false, 'GET', successHandler, errorHandler);
+  window.load(false, 'GET', successHandler, window.util.errorHandler);
 })();
