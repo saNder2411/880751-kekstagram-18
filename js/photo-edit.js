@@ -2,46 +2,13 @@
 
 (function () {
   var DEFAULT_VALUE = 100;
-  var effectsRadio = window.form.formEditing.querySelectorAll('.effects__radio');
-  var effectLevelInput = window.form.formEditing.querySelector('.effect-level__value');
+  var effectRadios = window.form.container.querySelectorAll('.effects__radio');
+  var effectLevelInput = window.form.container.querySelector('.effect-level__value');
   var sliderPin = window.form.slider.querySelector('.effect-level__pin');
   var sliderDepth = window.form.slider.querySelector('.effect-level__depth');
   var sliderWidth;
 
-  var effects = {
-    chrome: {
-      min: 0,
-      max: 1,
-      filterType: 'grayscale',
-      unit: ''
-    },
-    sepia: {
-      min: 0,
-      max: 1,
-      filterType: 'sepia',
-      unit: ''
-    },
-    marvin: {
-      min: 0,
-      max: 100,
-      filterType: 'invert',
-      unit: '%'
-    },
-    phobos: {
-      min: 0,
-      max: 5,
-      filterType: 'blur',
-      unit: 'px'
-    },
-    heat: {
-      min: 1,
-      max: 2,
-      filterType: 'brightness',
-      unit: ''
-    }
-  };
-
-  var addEffectRadioFocusHandler = function (radio) {
+  var addEffectRadioChangeHandler = function (radio) {
     radio.addEventListener('change', function () {
       var effectName = radio.value;
       if (effectName === 'none') {
@@ -59,9 +26,9 @@
     });
   };
 
-  for (var i = 0; i < effectsRadio.length; i++) {
-    addEffectRadioFocusHandler(effectsRadio[i]);
-  }
+  effectRadios.forEach(function (radio) {
+    addEffectRadioChangeHandler(radio);
+  });
 
   var convertsValues = function (max, min, positionPin) {
     var currentValue = ((max * positionPin) / sliderWidth) + min;
@@ -69,13 +36,14 @@
   };
 
   var calculatesFilterValues = function (positionPin) {
-    var activeEffect = window.form.formEditing.querySelector('.effects__radio:checked').value;
+    var activeEffect = window.form.container.querySelector('.effects__radio:checked').value;
+
     if (activeEffect === 'none') {
       window.form.imagePreview.style.filter = '';
       return;
     }
 
-    var effectSettings = effects[activeEffect];
+    var effectSettings = window.util.effects[activeEffect];
     var effectMax = effectSettings.max;
     var effectMin = effectSettings.min;
     var effectFilter = effectSettings.filterType;

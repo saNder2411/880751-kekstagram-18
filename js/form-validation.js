@@ -8,8 +8,8 @@
   var MIN_QUANTITY_SYMBOLS = 2;
   var COMMA = ',';
   var SPACE = '';
-  var hashtagsInput = window.form.formEditing.querySelector('.text__hashtags');
-  var commentsInput = window.form.formEditing.querySelector('.text__description');
+  var hashtagsInput = window.form.container.querySelector('.text__hashtags');
+  var commentsInput = window.form.container.querySelector('.text__description');
 
   var addStopPropagation = function (event, element) {
     element.addEventListener(event, function (evt) {

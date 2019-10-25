@@ -23,23 +23,23 @@
     photoDescription.textContent = photoData.description;
     commentsCount.textContent = photoData.comments.length;
 
-    for (var i = 0; i < photoData.comments.length; i++) {
+    photoData.comments.forEach(function (comment, i) {
       var cloneItem = commentItem.cloneNode(true);
       fragment.appendChild(cloneItem);
       var avatar = fragment.children[i].querySelector('.social__picture');
-      var comment = fragment.children[i].querySelector('.social__text');
+      var text = fragment.children[i].querySelector('.social__text');
 
-      avatar.src = photoData.comments[i].avatar;
-      avatar.alt = photoData.comments[i].name;
-      comment.textContent = photoData.comments[i].message;
-    }
+      avatar.src = comment.avatar;
+      avatar.alt = comment.name;
+      text.textContent = comment.message;
+    });
 
     commentsList.innerHTML = '';
     commentsList.appendChild(fragment);
   };
 
   var onFullPhotoEscPress = function (evt) {
-    window.util.isEscEvent(evt, hideFullPhoto);
+    window.util.doActionIfEscPressed(evt, hideFullPhoto);
   };
 
 
@@ -58,15 +58,19 @@
   });
 
   fullPhotoClose.addEventListener('keydown', function (evt) {
-    window.util.isEnterAndSpaceEvent(evt, hideFullPhoto);
+    window.util.doActionIfEnterOrSpacePressed(evt, hideFullPhoto);
   });
 
-  window.blockUserPhotos.addEventListener('click', function (evt) {
-    var createdThumbnails = Array.from(window.blockUserPhotos.querySelectorAll('.picture'));
-    var isPicture = evt.target.closest('.picture') || evt.target.classList.contains('picture');
+  window.picturesContainer.addEventListener('click', function (evt) {
+    var picture = evt.target.closest('.picture') || evt.target.classList.contains('picture');
+    var isPicture = Boolean(picture);
     if (isPicture) {
+      var pictureId = parseInt(picture.dataset.id, 10);
+      var pictureInfo = window.photosData.find(function (photo) {
+        return photo.id === pictureId;
+      });
       evt.preventDefault();
-      fillsFullPhotoData(window.photosData[createdThumbnails.indexOf(isPicture)]);
+      fillsFullPhotoData(pictureInfo);
       showFullPhoto();
     }
   });

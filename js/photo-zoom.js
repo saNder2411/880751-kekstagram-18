@@ -5,8 +5,8 @@
   var MAX_SCALE = 100;
   var MIN_SCALE = 25;
   var SCALE_CONVERSION = 100;
-  var scaleOut = window.form.formEditing.querySelector('.scale__control--smaller');
-  var scaleIn = window.form.formEditing.querySelector('.scale__control--bigger');
+  var scaleOut = window.form.container.querySelector('.scale__control--smaller');
+  var scaleIn = window.form.container.querySelector('.scale__control--bigger');
 
   var zoom = function (actionType) {
     var currentScale = parseInt(window.form.scaleValueInput.value, 10);
