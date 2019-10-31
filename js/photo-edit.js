@@ -30,12 +30,12 @@
     addEffectRadioChangeHandler(radio);
   });
 
-  var convertsValues = function (max, min, positionPin) {
+  var convertValues = function (max, min, positionPin) {
     var currentValue = ((max * positionPin) / sliderWidth) + min;
     return currentValue;
   };
 
-  var calculatesFilterValues = function (positionPin) {
+  var calculateFilterValues = function (positionPin) {
     var activeEffect = window.form.container.querySelector('.effects__radio:checked').value;
 
     if (activeEffect === 'none') {
@@ -48,27 +48,36 @@
     var effectMin = effectSettings.min;
     var effectFilter = effectSettings.filterType;
     var filterUnit = effectSettings.unit;
-    window.form.imagePreview.style.filter = effectFilter + '(' + convertsValues(effectMax, effectMin, positionPin) + filterUnit + ')';
+    window.form.imagePreview.style.filter = effectFilter + '(' + convertValues(effectMax, effectMin, positionPin) + filterUnit + ')';
   };
 
-  var onSliderPinMouseDown = function (evt) {
+  var onSliderMouseDown = function (evt) {
     evt.preventDefault();
 
     var startCoordsX = evt.clientX;
+    var coordsSliderPin = sliderPin.getBoundingClientRect().x + (sliderPin.offsetWidth / 2);
+    var shift = coordsSliderPin - startCoordsX;
+    var currentOffsetLeft = sliderPin.offsetLeft - shift;
+
+    var movesSliderPin = function (currentPosition, rangeWidth) {
+      if (currentPosition >= 0 && currentPosition <= rangeWidth) {
+        sliderPin.style.left = currentPosition + 'px';
+        sliderDepth.style.width = currentPosition + 'px';
+        effectLevelInput.value = Math.round(convertValues(DEFAULT_VALUE, 0, currentPosition));
+        calculateFilterValues(currentPosition);
+      }
+    };
+
+    movesSliderPin(currentOffsetLeft, sliderWidth);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      var shift = startCoordsX - moveEvt.clientX;
-      var currentOffsetLeft = sliderPin.offsetLeft - shift;
+      shift = startCoordsX - moveEvt.clientX;
+      currentOffsetLeft = sliderPin.offsetLeft - shift;
       startCoordsX = moveEvt.clientX;
 
-      if (currentOffsetLeft >= 0 && currentOffsetLeft <= sliderWidth) {
-        sliderPin.style.left = currentOffsetLeft + 'px';
-        sliderDepth.style.width = currentOffsetLeft + 'px';
-        effectLevelInput.value = Math.round(convertsValues(DEFAULT_VALUE, 0, currentOffsetLeft));
-        calculatesFilterValues(currentOffsetLeft);
-      }
+      movesSliderPin(currentOffsetLeft, sliderWidth);
     };
 
     var onMouseUp = function (upEvt) {
@@ -82,6 +91,5 @@
     document.addEventListener('mouseup', onMouseUp);
   };
 
-  sliderPin.addEventListener('mousedown', onSliderPinMouseDown);
+  window.form.slider.addEventListener('mousedown', onSliderMouseDown);
 })();
-
