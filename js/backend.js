@@ -8,41 +8,14 @@
   var OK_STATUS = 200;
   var REQUEST_TIMEOUT = 10000;
 
-  var handleSuccessAndErrorStatus = function (xhr, onSuccess, onError) {
-    var error;
-    switch (xhr.status) {
-      case OK_STATUS:
-        onSuccess(xhr.response);
-        break;
-      case 300:
-        error = 'Запрос имеет более одного возможного ответа';
-        break;
-      case 301:
-        error = 'URL запрошенного ресурса был изменен навсегда';
-        break;
-      case 302:
-        error = 'URI запрашиваемого ресурса был временно изменен';
-        break;
-      case 400:
-        error = 'Неверный запрос';
-        break;
-      case 401:
-        error = 'Пользователь не авторизован';
-        break;
-      case 404:
-        error = 'Ничего не найдено';
-        break;
-      case 500:
-        error = 'Сервер не отвечает';
-        break;
-
-      default:
-        error = 'Cтатус ответа: : ' + xhr.status + ' ' + xhr.statusText;
-    }
-
-    if (error) {
-      onError(error);
-    }
+  var errorTextMap = {
+    300: 'Запрос имеет более одного возможного ответа',
+    301: 'URL запрошенного ресурса был изменен навсегда',
+    302: 'URI запрашиваемого ресурса был временно изменен',
+    400: 'Неверный запрос',
+    401: 'Пользователь не авторизован',
+    404: 'Ничего не найдено',
+    500: 'Сервер не отвечает'
   };
 
   var createRequest = function (method, url, onSuccess, onError) {
@@ -51,7 +24,13 @@
     xhr.timeout = REQUEST_TIMEOUT;
 
     xhr.addEventListener('load', function () {
-      handleSuccessAndErrorStatus(xhr, onSuccess, onError);
+      if (xhr.status === OK_STATUS) {
+        onSuccess(xhr.response);
+      } else {
+        var error = errorTextMap[xhr.status];
+        var defaultError = 'Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText;
+        onError(error || defaultError);
+      }
     });
 
     xhr.addEventListener('error', function () {

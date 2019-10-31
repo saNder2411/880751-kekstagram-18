@@ -3,6 +3,7 @@
 (function () {
   var fullPhoto = document.querySelector('.big-picture');
   var fullPhotoClose = fullPhoto.querySelector('.big-picture__cancel');
+  var body = document.body;
 
   var fillsFullPhotoData = function (photoData) {
     var bigImage = fullPhoto.querySelector('.big-picture__img img');
@@ -45,11 +46,13 @@
 
   var showFullPhoto = function () {
     fullPhoto.classList.remove('hidden');
+    body.classList.add('modal-open');
     document.addEventListener('keydown', onFullPhotoEscPress);
   };
 
   var hideFullPhoto = function () {
     fullPhoto.classList.add('hidden');
+    body.classList.remove('modal-open');
     document.removeEventListener('keydown', onFullPhotoEscPress);
   };
 
@@ -61,15 +64,17 @@
     window.util.doActionIfEnterOrSpacePressed(evt, hideFullPhoto);
   });
 
-  window.picturesContainer.addEventListener('click', function (evt) {
+  window.gallery.picturesContainer.addEventListener('click', function (evt) {
     var picture = evt.target.closest('.picture') || evt.target.classList.contains('picture');
     var isPicture = Boolean(picture);
     if (isPicture) {
+      evt.preventDefault();
+
       var pictureId = parseInt(picture.dataset.id, 10);
-      var pictureInfo = window.photosData.find(function (photo) {
+      var pictureInfo = window.gallery.photosData.find(function (photo) {
         return photo.id === pictureId;
       });
-      evt.preventDefault();
+
       fillsFullPhotoData(pictureInfo);
       showFullPhoto();
     }
