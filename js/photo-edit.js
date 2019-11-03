@@ -70,22 +70,6 @@
 
     movesSliderPin(currentPosition.x);
 
-    // var startCoordsX = evt.clientX;
-    // var coordsSliderPin = sliderPin.getBoundingClientRect().x + (sliderPin.offsetWidth / 2);
-    // var shift = coordsSliderPin - startCoordsX;
-    // var currentOffsetLeft = sliderPin.offsetLeft - shift;
-
-    // var movesSliderPin = function (currentPosition, rangeWidth) {
-    //   if (currentPosition >= 0 && currentPosition <= rangeWidth) {
-    //     sliderPin.style.left = currentPosition + 'px';
-    //     sliderDepth.style.width = currentPosition + 'px';
-    //     effectLevelInput.value = Math.round(convertValues(DEFAULT_VALUE, 0, currentPosition));
-    //     calculateFilterValues(currentPosition);
-    //   }
-    // };
-
-    // movesSliderPin(currentOffsetLeft, sliderWidth);
-
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
@@ -94,12 +78,6 @@
       clickCoordinate.x = moveEvt.clientX;
 
       movesSliderPin(currentPosition.x);
-
-      // shift = startCoordsX - moveEvt.clientX;
-      // currentOffsetLeft = sliderPin.offsetLeft - shift;
-      // startCoordsX = moveEvt.clientX;
-
-      // movesSliderPin(currentOffsetLeft, sliderWidth);
     };
 
     var onMouseUp = function (upEvt) {
