@@ -43,7 +43,7 @@
       return;
     }
 
-    var effectSettings = window.util.effects[activeEffect];
+    var effectSettings = window.util.effectMap[activeEffect];
     var effectMax = effectSettings.max;
     var effectMin = effectSettings.min;
     var effectFilter = effectSettings.filterType;
@@ -54,30 +54,52 @@
   var onSliderMouseDown = function (evt) {
     evt.preventDefault();
 
-    var startCoordsX = evt.clientX;
     var coordsSliderPin = sliderPin.getBoundingClientRect().x + (sliderPin.offsetWidth / 2);
-    var shift = coordsSliderPin - startCoordsX;
-    var currentOffsetLeft = sliderPin.offsetLeft - shift;
+    var sliderArea = new window.sliderCoordinate.SliderArea(0, 0, sliderWidth, 0);
+    var clickCoordinate = new window.sliderCoordinate.Coordinate(evt.clientX);
+    var currentPosition = new window.sliderCoordinate.Coordinate(sliderPin.offsetLeft, 0, sliderArea);
+    var shift = coordsSliderPin - clickCoordinate.x;
+    currentPosition.setX((currentPosition.x - shift));
 
-    var movesSliderPin = function (currentPosition, rangeWidth) {
-      if (currentPosition >= 0 && currentPosition <= rangeWidth) {
-        sliderPin.style.left = currentPosition + 'px';
-        sliderDepth.style.width = currentPosition + 'px';
-        effectLevelInput.value = Math.round(convertValues(DEFAULT_VALUE, 0, currentPosition));
-        calculateFilterValues(currentPosition);
-      }
+    var movesSliderPin = function (position) {
+      sliderPin.style.left = position + 'px';
+      sliderDepth.style.width = position + 'px';
+      effectLevelInput.value = Math.round(convertValues(DEFAULT_VALUE, 0, position));
+      calculateFilterValues(position);
     };
 
-    movesSliderPin(currentOffsetLeft, sliderWidth);
+    movesSliderPin(currentPosition.x);
+
+    // var startCoordsX = evt.clientX;
+    // var coordsSliderPin = sliderPin.getBoundingClientRect().x + (sliderPin.offsetWidth / 2);
+    // var shift = coordsSliderPin - startCoordsX;
+    // var currentOffsetLeft = sliderPin.offsetLeft - shift;
+
+    // var movesSliderPin = function (currentPosition, rangeWidth) {
+    //   if (currentPosition >= 0 && currentPosition <= rangeWidth) {
+    //     sliderPin.style.left = currentPosition + 'px';
+    //     sliderDepth.style.width = currentPosition + 'px';
+    //     effectLevelInput.value = Math.round(convertValues(DEFAULT_VALUE, 0, currentPosition));
+    //     calculateFilterValues(currentPosition);
+    //   }
+    // };
+
+    // movesSliderPin(currentOffsetLeft, sliderWidth);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
-      shift = startCoordsX - moveEvt.clientX;
-      currentOffsetLeft = sliderPin.offsetLeft - shift;
-      startCoordsX = moveEvt.clientX;
+      shift = clickCoordinate.x - moveEvt.clientX;
+      currentPosition.setX((currentPosition.x - shift));
+      clickCoordinate.x = moveEvt.clientX;
 
-      movesSliderPin(currentOffsetLeft, sliderWidth);
+      movesSliderPin(currentPosition.x);
+
+      // shift = startCoordsX - moveEvt.clientX;
+      // currentOffsetLeft = sliderPin.offsetLeft - shift;
+      // startCoordsX = moveEvt.clientX;
+
+      // movesSliderPin(currentOffsetLeft, sliderWidth);
     };
 
     var onMouseUp = function (upEvt) {
