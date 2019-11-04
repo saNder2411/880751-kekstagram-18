@@ -12,6 +12,7 @@
 
   window.form = {
     container: imageForm,
+    imageUploadInput: imageUploadInput,
     imagePreview: imagePreview,
     scaleValueInput: scaleValueInput,
     slider: slider,
@@ -32,8 +33,8 @@
 
   var hideImageForm = function () {
     imageForm.classList.add('hidden');
-    window.formValidation.hashtagsInput.setCustomValidity('');
-    window.formValidation.commentsInput.setCustomValidity('');
+    window.formValidation.setValidation(window.formValidation.hashtagsInput, '', '');
+    window.formValidation.setValidation(window.formValidation.commentsInput, '', '');
     form.reset();
     document.removeEventListener('keydown', onImageFormEscPress);
   };

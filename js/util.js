@@ -20,7 +20,7 @@
       var randomNumber = min + Math.random() * (max + 1 - min);
       return Math.floor(randomNumber);
     },
-    effects: {
+    effectMap: {
       chrome: {
         min: 0,
         max: 1,
