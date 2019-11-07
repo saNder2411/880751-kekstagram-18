@@ -24,7 +24,6 @@
         };
 
         reader.addEventListener('load', onReaderLoad);
-
         reader.readAsDataURL(file);
       }
     }

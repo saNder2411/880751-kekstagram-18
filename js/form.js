@@ -15,7 +15,7 @@
     imageUploadInput: imageUploadInput,
     imagePreview: imagePreview,
     scaleValueInput: scaleValueInput,
-    slider: slider,
+    slider: slider
   };
 
   var onImageFormEscPress = function (evt) {
