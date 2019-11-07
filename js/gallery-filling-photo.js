@@ -37,11 +37,10 @@
 
       commentsList.innerHTML = '';
       commentsList.appendChild(fragment);
+      commentsLoader.classList.remove('hidden');
 
       if (commentsList.children.length <= SHOWN_COMMENTS) {
         commentsLoader.classList.add('hidden');
-      } else {
-        commentsLoader.classList.remove('hidden');
       }
     }
   };

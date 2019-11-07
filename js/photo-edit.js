@@ -54,10 +54,10 @@
   var onSliderMouseDown = function (evt) {
     evt.preventDefault();
 
-    var coordsSliderPin = sliderPin.getBoundingClientRect().x + (sliderPin.offsetWidth / 2);
     var sliderArea = new window.sliderCoordinate.SliderArea(0, 0, sliderWidth, 0);
     var clickCoordinate = new window.sliderCoordinate.Coordinate(evt.clientX);
     var currentPosition = new window.sliderCoordinate.Coordinate(sliderPin.offsetLeft, 0, sliderArea);
+    var coordsSliderPin = sliderPin.getBoundingClientRect().x + (sliderPin.offsetWidth / 2);
     var shift = coordsSliderPin - clickCoordinate.x;
     currentPosition.setX((currentPosition.x - shift));
 
