@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var ERROR_CLASS = 'error__inner';
+  var ERROR_BUTTON_CLASS = 'error__button';
+  var SUCCESS_CLASS = 'success__inner';
+  var SUCCESS_BUTTON_CLASS = 'success__button';
   var main = document.querySelector('main');
   var errorTemplate =
     document.querySelector('#error')
@@ -12,10 +16,6 @@
       .querySelector('.success');
   var errorPopup = errorTemplate.cloneNode(true);
   var successPopup = successTemplate.cloneNode(true);
-  var ERROR_CLASS = 'error__inner';
-  var ERROR_BUTTON_CLASS = 'error__button';
-  var SUCCESS_CLASS = 'success__inner';
-  var SUCCESS_BUTTON_CLASS = 'success__button';
 
   var addPopupHandlers = function (popup, popupClass, buttonClass) {
     var onPopupEscPress = function (evt) {
